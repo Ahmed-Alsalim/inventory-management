@@ -4,9 +4,10 @@ import SideBar from "@/shared/sideBar.vue";
 import inventory from "../inventory";
 import { mapGetters } from "vuex";
 import employee from "../employee";
+import Assignment from "../assignment";
 export default {
   name: "App",
-  components: { inventory, SideBar, NavBar, employee },
+  components: { inventory, SideBar, NavBar, employee, Assignment },
   computed: {
     ...mapGetters(["currentTableName"]),
   },
@@ -20,6 +21,7 @@ export default {
       <side-bar />
       <inventory v-if="currentTableName === 'Inventory'" id="inventory" />
       <employee v-else-if="currentTableName === 'Employee'" />
+      <assignment v-else-if="currentTableName === 'Assignment'" />
     </v-layout>
   </v-app>
 </template>

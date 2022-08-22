@@ -6,6 +6,7 @@ import mutations from "./mutations";
 import actions from "./actions";
 import inventory from "../../inventory/store";
 import employee from "../../employee/store";
+import assignment from "../../assignment/store";
 
 Vue.use(Vuex);
 
@@ -14,5 +15,5 @@ export default new Vuex.Store({
   getters,
   mutations,
   actions,
-  modules: { inventory, employee },
+  modules: { inventory, employee, assignment },
 });
