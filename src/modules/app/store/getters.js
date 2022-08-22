@@ -1,5 +1,5 @@
 export default {
-  getCurrentTableName(state) {
+  currentTableName(state) {
     return state.currentTableName;
   },
 };

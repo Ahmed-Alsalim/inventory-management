@@ -1,4 +1,5 @@
 <script>
+import { mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -15,10 +16,7 @@ export default {
     };
   },
   methods: {
-    selectTable(tableName) {
-      this.$store.commit("selectTable", tableName);
-      this.$store.dispatch("fetchData");
-    },
+    ...mapMutations(["changeCurrentTable"]),
   },
 };
 </script>
@@ -29,7 +27,7 @@ export default {
       <v-list-tile
         v-for="item in items"
         :key="item.title"
-        @click="selectTable(item.tableName)"
+        @click="changeCurrentTable(item.tableName)"
       >
         <v-list-tile-action>
           <v-icon>{{ item.icon }}</v-icon>

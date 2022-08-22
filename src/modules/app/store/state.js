@@ -1,3 +1,3 @@
 export default () => ({
-  currentTableName: "inventory",
+  currentTableName: "Inventory",
 });
