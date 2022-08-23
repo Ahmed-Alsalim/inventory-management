@@ -57,7 +57,6 @@ export default {
   watch: {
     dialog(show) {
       if (!show) {
-        console.log(this.isLoading);
         this.dialogType = "";
         this.editedItem = {};
       }

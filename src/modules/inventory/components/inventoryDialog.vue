@@ -21,8 +21,6 @@ export default {
       const fields = [
         { text: "title", value: "title" },
         { text: "serial Number", value: "serialNumber" },
-        { text: "start Date", value: "startDate" },
-        { text: "end Date", value: "endDate" },
       ];
       if (this.dialogType === "Edit") {
         fields.unshift({ text: "id", value: "id" });
