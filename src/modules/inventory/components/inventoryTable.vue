@@ -16,6 +16,7 @@ export default {
 
   computed: {
     ...mapGetters("inventory", ["inventoryList", "inventoryHeaders"]),
+    ...mapGetters(["isLoading"]),
   },
 
   methods: {
@@ -56,6 +57,7 @@ export default {
   watch: {
     dialog(show) {
       if (!show) {
+        console.log(this.isLoading);
         this.dialogType = "";
         this.editedItem = {};
       }
@@ -109,6 +111,7 @@ export default {
       class="elevation-1"
       select-all
       :rows-per-page-items="['10']"
+      :loading="isLoading"
     >
       <template v-slot:items="props">
         <tr>

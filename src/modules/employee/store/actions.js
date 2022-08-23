@@ -2,9 +2,13 @@ import axios from "axios";
 
 export default {
   fetchEmployee({ commit }) {
+    commit("isLoading", true, { root: true });
     axios
       .get("http://192.168.1.116:65111/employee")
-      .then((req) => commit("setEmployee", req.data.data))
+      .then((req) => {
+        commit("setEmployee", req.data.data);
+        commit("isLoading", false, { root: true });
+      })
       .catch((e) => console.log(e));
   },
 

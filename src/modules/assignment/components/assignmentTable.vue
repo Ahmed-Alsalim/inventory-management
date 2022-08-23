@@ -16,6 +16,7 @@ export default {
 
   computed: {
     ...mapGetters("assignment", ["assignmentList", "assignmentHeaders"]),
+    ...mapGetters(["isLoading"]),
   },
 
   methods: {
@@ -85,7 +86,6 @@ export default {
       <v-spacer />
       <assignment-dialog v-model="dialog" @submit="submitItem" />
     </v-toolbar>
-
     <v-data-table
       :headers="assignmentHeaders"
       :items="assignmentList"
@@ -93,6 +93,7 @@ export default {
       class="elevation-1"
       select-all
       :rows-per-page-items="['10']"
+      :loading="isLoading"
     >
       <template v-slot:items="props">
         <tr>

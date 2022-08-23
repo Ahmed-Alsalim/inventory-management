@@ -16,6 +16,7 @@ export default {
 
   computed: {
     ...mapGetters("employee", ["employeeList", "employeeHeaders"]),
+    ...mapGetters(["isLoading"]),
   },
 
   methods: {
@@ -108,6 +109,7 @@ export default {
       class="elevation-1"
       select-all
       :rows-per-page-items="['10']"
+      :loading="isLoading"
     >
       <template v-slot:items="props">
         <tr>
