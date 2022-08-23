@@ -10,6 +10,7 @@ export default {
       dialog: false,
       editedItem: {},
       selected: [],
+      dialogType: "Add",
     };
   },
 
@@ -18,7 +19,17 @@ export default {
   },
 
   methods: {
-    ...mapActions("assignment", ["fetchAssignment", "deleteAssignment"]),
+    ...mapActions("assignment", [
+      "fetchAssignment",
+      "addAssignment",
+      "returnAssignment",
+      "deleteAssignment",
+    ]),
+
+    submitItem(item) {
+      console.log(item);
+      this.addAssignment(item);
+    },
 
     tableItem(data) {
       if (data) {
@@ -30,15 +41,12 @@ export default {
         return data;
       }
     },
-    editItem(item) {
-      const data = this.assignmentList;
-      this.editedItem = data.filter((tableItem) => item.id === tableItem.id)[0];
-      console.log(this.editedItem);
+    addItem() {
       this.dialog = true;
     },
-    deleteItem(itemList) {
-      if (confirm("Are you sure you want to delete the choosen item/s?")) {
-        this.deleteAssignment(itemList);
+    returnItem(itemList) {
+      if (confirm("Are you sure you want to return the choosen item/s?")) {
+        this.returnAssignment(itemList);
       }
     },
   },
@@ -53,15 +61,20 @@ export default {
   <div>
     <v-sheet color="grey lighten-3" class="mx-auto">
       <v-card-actions>
-        <base-btn color="primary" icon="add" title="add" />
+        <base-btn color="primary" icon="add" title="add" @click="addItem" />
         <base-btn
-          color="red"
-          icon="delete"
-          title="delete"
-          @click="deleteItem(selected)"
+          color="pink"
+          icon="reply"
+          title="return"
+          @click="returnItem(selected)"
         />
         <v-spacer />
-        <base-btn color="black" icon="refresh" title="refresh" />
+        <base-btn
+          color="black"
+          icon="refresh"
+          title="refresh"
+          @click="fetchAssignment"
+        />
       </v-card-actions>
     </v-sheet>
     <hr />
@@ -70,11 +83,7 @@ export default {
       <v-toolbar-title>Assignment</v-toolbar-title>
       <v-divider class="mx-2" inset vertical />
       <v-spacer />
-      <assignment-dialog
-        v-model="dialog"
-        :item="editedItem"
-        tableName="assignment"
-      />
+      <assignment-dialog v-model="dialog" @submit="submitItem" />
     </v-toolbar>
 
     <v-data-table
@@ -98,10 +107,14 @@ export default {
             {{ tableItem(props.item[header.value]) }}
           </td>
           <td>
-            <v-icon small class="mr-2" @click="editItem(props.item)">
-              edit
+            <v-icon
+              small
+              class="mr-2"
+              @click="returnItem([props.item])"
+              title="return"
+            >
+              reply
             </v-icon>
-            <v-icon small @click="deleteItem([props.item])"> delete </v-icon>
           </td>
         </tr>
       </template>
