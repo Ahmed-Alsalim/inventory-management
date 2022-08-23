@@ -19,15 +19,17 @@ export default {
     <nav-bar />
     <v-layout>
       <side-bar />
-      <inventory v-if="currentTableName === 'Inventory'" id="inventory" />
-      <employee v-else-if="currentTableName === 'Employee'" />
-      <assignment v-else-if="currentTableName === 'Assignment'" />
+      <v-flex class="content">
+        <inventory v-if="currentTableName === 'Inventory'" />
+        <employee v-else-if="currentTableName === 'Employee'" />
+        <assignment v-else-if="currentTableName === 'Assignment'" />
+      </v-flex>
     </v-layout>
   </v-app>
 </template>
 
 <style>
-#inventory {
+.content {
   padding: 1rem;
 }
 </style>

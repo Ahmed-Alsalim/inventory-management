@@ -10,6 +10,7 @@ export default {
       dialog: false,
       editedItem: {},
       selected: [],
+      dialogType: "",
     };
   },
 
@@ -18,7 +19,15 @@ export default {
   },
 
   methods: {
-    ...mapActions("inventory", ["fetchInventory", "deleteInventory"]),
+    ...mapActions("inventory", [
+      "fetchInventory",
+      "editInventory",
+      "deleteInventory",
+    ]),
+
+    submitItem(item) {
+      this.editInventory(item);
+    },
 
     tableItem(data) {
       if (data) {
@@ -28,15 +37,27 @@ export default {
         return data;
       }
     },
+    addItem() {
+      this.dialogType = "Add";
+      this.dialog = true;
+    },
     editItem(item) {
       const data = this.inventoryList;
       this.editedItem = data.filter((tableItem) => item.id === tableItem.id)[0];
-      console.log(this.editedItem);
+      this.dialogType = "Edit";
       this.dialog = true;
     },
     deleteItem(itemList) {
       if (confirm("Are you sure you want to delete the choosen item/s?")) {
         this.deleteInventory(itemList);
+      }
+    },
+  },
+  watch: {
+    dialog(show) {
+      if (!show) {
+        this.dialogType = "";
+        this.editedItem = {};
       }
     },
   },
@@ -51,7 +72,7 @@ export default {
   <div>
     <v-sheet color="grey lighten-3" class="mx-auto">
       <v-card-actions>
-        <base-btn color="primary" icon="add" title="add" />
+        <base-btn color="primary" icon="add" title="add" @click="addItem" />
         <base-btn
           color="red"
           icon="delete"
@@ -59,7 +80,12 @@ export default {
           @click="deleteItem(selected)"
         />
         <v-spacer />
-        <base-btn color="black" icon="refresh" title="refresh" />
+        <base-btn
+          color="black"
+          icon="refresh"
+          title="refresh"
+          @click="fetchInventory"
+        />
       </v-card-actions>
     </v-sheet>
     <hr />
@@ -71,7 +97,8 @@ export default {
       <inventory-dialog
         v-model="dialog"
         :item="editedItem"
-        tableName="inventory"
+        :dialogType="dialogType"
+        @submit="submitItem"
       />
     </v-toolbar>
 

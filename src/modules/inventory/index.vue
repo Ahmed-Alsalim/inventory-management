@@ -7,13 +7,11 @@ export default {
 </script>
 
 <template>
-  <v-flex>
-    <v-card>
-      <v-sheet>
-        <inventory-table class="mx-auto" />
-      </v-sheet>
-    </v-card>
-  </v-flex>
+  <v-card>
+    <v-sheet>
+      <inventory-table class="mx-auto" />
+    </v-sheet>
+  </v-card>
 </template>
 
 <style></style>

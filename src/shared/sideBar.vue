@@ -4,13 +4,9 @@ export default {
   data() {
     return {
       items: [
-        { title: "Inventory", icon: "inventory", tableName: "Inventory" },
-        { title: "Employees", icon: "assignment_ind", tableName: "Employee" },
-        {
-          title: "Assignment",
-          icon: "assignment_turned_in",
-          tableName: "Assignment",
-        },
+        { title: "Inventory", icon: "inventory" },
+        { title: "Employee", icon: "assignment_ind" },
+        { title: "Assignment", icon: "assignment_turned_in" },
       ],
       right: null,
     };
@@ -27,7 +23,7 @@ export default {
       <v-list-tile
         v-for="item in items"
         :key="item.title"
-        @click="changeCurrentTable(item.tableName)"
+        @click="changeCurrentTable(item.title)"
       >
         <v-list-tile-action>
           <v-icon>{{ item.icon }}</v-icon>

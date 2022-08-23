@@ -1,6 +1,6 @@
 <script>
 export default {
-  props: { value: Boolean, item: Object, tableName: String },
+  props: { value: Boolean, item: Object, dialogType: String },
 
   data() {
     return {
@@ -19,16 +19,16 @@ export default {
       },
     },
     dialogFields() {
-      return [
-        { text: "id", value: "id" },
+      const fields = [
         { text: "title", value: "title" },
         { text: "Name", value: "name" },
         { text: "Department", value: "department" },
       ];
-    },
-
-    headerNames() {
-      return this.$store.getters.getHeaders;
+      if (this.dialogType === "Edit") {
+        fields.unshift({ text: "id", value: "id" });
+        return fields;
+      }
+      return fields;
     },
   },
 
@@ -36,18 +36,18 @@ export default {
     submitItem(data) {
       console.log("submit");
       console.log(data);
+      this.$emit("submit", data);
       this.dialog = false;
-      // this.$emit("submit", data);
     },
-    formData(val) {
-      return this.data[val];
+    setData(val, def) {
+      this.data[def] = val;
     },
   },
 
   watch: {
     dialog(show) {
       if (show) {
-        this.data = this.item;
+        this.data = { ...this.item };
       }
     },
   },
@@ -58,7 +58,7 @@ export default {
   <v-dialog v-model="dialog" max-width="30rem" lazy>
     <v-card>
       <v-card-title>
-        <span class="headline">{{ formTitle }}</span>
+        <span class="headline">{{ dialogType }}</span>
       </v-card-title>
 
       <v-card-text>
@@ -69,7 +69,8 @@ export default {
                 <v-text-field
                   :label="field.text"
                   :readonly="field.value === 'id'"
-                  :value="formData(field.value)"
+                  :value="data[field.value]"
+                  @input="setData($event, field.value)"
                 />
               </v-flex>
             </template>

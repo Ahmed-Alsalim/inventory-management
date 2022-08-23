@@ -1,4 +1,4 @@
-# mini-reybex2
+# Inventory Management System
 
 ## Project setup
 ```

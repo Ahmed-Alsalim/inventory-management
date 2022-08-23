@@ -16,4 +16,15 @@ export default {
         .catch((e) => console.log(e));
     });
   },
+
+  editEmployee({ dispatch }, item) {
+    const config = {
+      method: "post",
+      url: "http://192.168.1.116:65111/employee",
+      data: { employee: item },
+    };
+    axios(config)
+      .then(() => dispatch("fetchEmployee"))
+      .catch((e) => console.log(e));
+  },
 };

@@ -7,13 +7,11 @@ export default {
 </script>
 
 <template>
-  <v-flex>
-    <v-card>
-      <v-sheet>
-        <employee-table class="mx-auto" />
-      </v-sheet>
-    </v-card>
-  </v-flex>
+  <v-card>
+    <v-sheet>
+      <employee-table class="mx-auto" />
+    </v-sheet>
+  </v-card>
 </template>
 
 <style></style>
