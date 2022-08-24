@@ -33,4 +33,10 @@ export default {
       .then(() => dispatch("fetchInventory"))
       .catch((e) => console.log(e));
   },
+  filterInventory({ getters, commit }, searchTerm) {
+    let filteredData = getters.inventoryList.filter((inv) =>
+      inv[getters.filterColumn].includes(searchTerm)
+    );
+    commit("setFilteredInventoryList", filteredData);
+  },
 };

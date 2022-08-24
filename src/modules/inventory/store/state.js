@@ -1,10 +1,12 @@
 export default () => ({
   inventoryList: [],
   inventoryHeaders: [
-    { text: "id", value: "id" },
-    { text: "Title", value: "title" },
-    { text: "Serial Number", value: "serialNumber" },
-    { text: "Start Date", value: "startDate" },
-    { text: "End Date", value: "endDate" },
+    { text: "id", value: "id", type: "number" },
+    { text: "Title", value: "title", type: "text" },
+    { text: "Serial Number", value: "serialNumber", type: "number" },
+    { text: "Start Date", value: "startDate", type: "datetime" },
+    { text: "End Date", value: "endDate", type: "datetime" },
   ],
+  filterColumn: "",
+  filteredInventoryList: [],
 });

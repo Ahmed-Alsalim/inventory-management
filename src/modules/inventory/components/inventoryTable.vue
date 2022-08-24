@@ -1,6 +1,6 @@
 <script>
 import BaseBtn from "@/shared/BaseBtn.vue";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 import InventoryDialog from "./inventoryDialog.vue";
 export default {
   components: { BaseBtn, InventoryDialog },
@@ -11,11 +11,16 @@ export default {
       editedItem: {},
       selected: [],
       dialogType: "",
+      search: "",
     };
   },
 
   computed: {
-    ...mapGetters("inventory", ["inventoryList", "inventoryHeaders"]),
+    ...mapGetters("inventory", [
+      "inventoryList",
+      "inventoryHeaders",
+      "filteredInventoryList",
+    ]),
     ...mapGetters(["isLoading"]),
   },
 
@@ -24,7 +29,9 @@ export default {
       "fetchInventory",
       "editInventory",
       "deleteInventory",
+      "filterInventory",
     ]),
+    ...mapMutations("inventory", ["setFilterColumn"]),
 
     submitItem(item) {
       this.editInventory(item);
@@ -81,6 +88,20 @@ export default {
           @click="deleteItem(selected)"
         />
         <v-spacer />
+        <v-select
+          :items="inventoryHeaders"
+          @change="setFilterColumn"
+          label="dropdown"
+        ></v-select>
+        <v-text-field
+          v-model="search"
+          append-icon="search"
+          label="Search"
+          single-line
+          hide-details
+          @input="filterInventory"
+        ></v-text-field>
+
         <base-btn
           color="black"
           icon="refresh"
@@ -105,12 +126,13 @@ export default {
 
     <v-data-table
       :headers="inventoryHeaders"
-      :items="inventoryList"
+      :items="filteredInventoryList"
       v-model="selected"
       class="elevation-1"
       select-all
       :rows-per-page-items="['10']"
       :loading="isLoading"
+      :search="search"
     >
       <template v-slot:items="props">
         <tr>
