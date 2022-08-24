@@ -1,28 +1,32 @@
 import axios from "axios";
 
 export default {
-  fetchEmployee({ commit }) {
+  fetchEmployee({ commit, rootGetters }) {
     commit("isLoading", true, { root: true });
+    const url = rootGetters.databaseUrl;
+
     axios
-      .get("http://192.168.1.116:65111/employee")
+      .get(`${url}/employee`)
       .then((req) => commit("setEmployee", req.data.data))
       .catch((e) => console.log(e))
       .finally(() => commit("isLoading", false, { root: true }));
   },
 
-  deleteEmployee({ dispatch }, itemList) {
+  deleteEmployee({ dispatch, rootGetters }, itemList) {
+    const url = rootGetters.databaseUrl;
     itemList.forEach((item) => {
       axios
-        .delete(`http://192.168.1.116:65111/employee/${item.id}`)
+        .delete(`${url}/employee/${item.id}`)
         .then(() => dispatch("fetchEmployee"))
         .catch((e) => console.log(e));
     });
   },
 
-  editEmployee({ dispatch }, item) {
+  editEmployee({ dispatch, rootGetters }, item) {
+    const url = rootGetters.databaseUrl;
     const config = {
       method: "post",
-      url: "http://192.168.1.116:65111/employee",
+      url: `${url}/employee`,
       data: { employee: item },
     };
     axios(config)

@@ -1,29 +1,32 @@
 import axios from "axios";
 
 export default {
-  fetchInventory({ commit }) {
+  fetchInventory({ commit, rootGetters }) {
+    const url = rootGetters.databaseUrl;
     commit("isLoading", true, { root: true });
 
     axios
-      .get("http://192.168.1.116:65111/inventory")
+      .get(`${url}/inventory`)
       .then((req) => commit("setInventory", req.data.data))
       .catch((e) => console.log(e))
       .finally(() => commit("isLoading", false, { root: true }));
   },
 
-  deleteInventory({ dispatch }, itemList) {
+  deleteInventory({ dispatch, rootGetters }, itemList) {
+    const url = rootGetters.databaseUrl;
     itemList.forEach((item) => {
       axios
-        .delete(`http://192.168.1.116:65111/inventory/${item.id}`)
+        .delete(`${url}/inventory/${item.id}`)
         .then(() => dispatch("fetchInventory"))
         .catch((e) => console.log(e));
     });
   },
 
-  editInventory({ dispatch }, item) {
+  editInventory({ dispatch, rootGetters }, item) {
+    const url = rootGetters.databaseUrl;
     const config = {
       method: "post",
-      url: "http://192.168.1.116:65111/inventory",
+      url: `${url}/inventory`,
       data: { inventory: item },
     };
     axios(config)
