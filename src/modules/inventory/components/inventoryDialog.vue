@@ -36,9 +36,6 @@ export default {
       this.$emit("submit", data);
       this.dialog = false;
     },
-    setData(val, def) {
-      this.data[def] = val;
-    },
   },
 
   watch: {
@@ -66,8 +63,7 @@ export default {
                 <v-text-field
                   :label="field.text"
                   :readonly="field.value === 'id'"
-                  :value="data[field.value]"
-                  @input="setData($event, field.value)"
+                  v-model="data[field.value]"
                 />
               </v-flex>
             </template>

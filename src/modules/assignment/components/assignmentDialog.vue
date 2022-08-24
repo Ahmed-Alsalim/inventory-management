@@ -1,4 +1,5 @@
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
   props: { value: Boolean },
 
@@ -9,6 +10,9 @@ export default {
   },
 
   computed: {
+    ...mapGetters("inventory", ["inventoryList"]),
+    ...mapGetters("employee", ["employeeList"]),
+
     dialog: {
       get() {
         return this.value;
@@ -17,23 +21,16 @@ export default {
         this.$emit("input", value);
       },
     },
-    dialogFields() {
-      return [
-        { text: "Employee id", value: "employeeId" },
-        { text: "Inventory id", value: "inventoryId" },
-      ];
-    },
   },
 
   methods: {
+    ...mapActions("inventory", ["fetchInventory"]),
+    ...mapActions("employee", ["fetchEmployee"]),
     submitItem(data) {
       console.log("submit");
       console.log(data);
       this.$emit("submit", data);
       this.dialog = false;
-    },
-    setData(val, def) {
-      this.data[def] = val;
     },
   },
 
@@ -41,6 +38,8 @@ export default {
     dialog(show) {
       if (show) {
         this.data = {};
+        this.fetchInventory();
+        this.fetchEmployee();
       }
     },
   },
@@ -57,15 +56,22 @@ export default {
       <v-card-text>
         <v-container grid-list-md>
           <v-layout wrap>
-            <template v-for="field in dialogFields">
-              <v-flex :key="field.value" s12 md6>
-                <v-text-field
-                  :label="field.text"
-                  :value="data[field.value]"
-                  @input="setData($event, field.value)"
-                />
-              </v-flex>
-            </template>
+            <v-flex>
+              <v-select
+                label="Inventory id"
+                v-model="data.inventoryId"
+                :items="inventoryList"
+                item-text="title"
+                item-value="id"
+              />
+              <v-select
+                label="Employee id"
+                v-model="data.employeeId"
+                :items="employeeList"
+                item-text="name"
+                item-value="id"
+              />
+            </v-flex>
           </v-layout>
         </v-container>
       </v-card-text>

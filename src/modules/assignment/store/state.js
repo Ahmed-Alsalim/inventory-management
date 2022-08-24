@@ -7,4 +7,5 @@ export default () => ({
     { text: "Start Date", value: "startDate" },
     { text: "Previous Employee id", value: "beforeEmployeeId" },
   ],
+  showCurrentAssignments: true,
 });

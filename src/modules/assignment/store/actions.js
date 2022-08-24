@@ -1,10 +1,11 @@
 import axios from "axios";
 
 export default {
-  fetchAssignment({ commit }) {
+  fetchAssignment({ commit, getters }) {
+    const current = getters.showCurrentAssignments ? "current" : "";
     commit("isLoading", true, { root: true });
     axios
-      .get("http://192.168.1.116:65111/assignment/current")
+      .get(`http://192.168.1.116:65111/assignment/${current}`)
       .then((req) => commit("setAssignment", req.data.data))
       .catch((e) => console.log(e))
       .finally(() => commit("isLoading", false, { root: true }));
@@ -35,5 +36,9 @@ export default {
         console.log(e);
         alert("Quota exceeded");
       });
+  },
+  toggleCurrentAssignments({ commit, dispatch, getters }) {
+    commit("toggleCurrentAssignments", !getters.showCurrentAssignments);
+    dispatch("fetchAssignment");
   },
 };

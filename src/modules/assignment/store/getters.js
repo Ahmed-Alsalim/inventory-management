@@ -5,4 +5,7 @@ export default {
   assignmentHeaders(state) {
     return state.assignmentHeaders;
   },
+  showCurrentAssignments(state) {
+    return state.showCurrentAssignments;
+  },
 };

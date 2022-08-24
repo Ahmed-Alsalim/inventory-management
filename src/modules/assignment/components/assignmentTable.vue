@@ -11,11 +11,16 @@ export default {
       editedItem: {},
       selected: [],
       dialogType: "Add",
+      switch1: false,
     };
   },
 
   computed: {
-    ...mapGetters("assignment", ["assignmentList", "assignmentHeaders"]),
+    ...mapGetters("assignment", [
+      "assignmentList",
+      "assignmentHeaders",
+      "showCurrentAssignments",
+    ]),
     ...mapGetters(["isLoading"]),
   },
 
@@ -25,6 +30,7 @@ export default {
       "addAssignment",
       "returnAssignment",
       "deleteAssignment",
+      "toggleCurrentAssignments",
     ]),
 
     submitItem(item) {
@@ -70,6 +76,14 @@ export default {
           @click="returnItem(selected)"
         />
         <v-spacer />
+        <v-switch
+          :input-value="showCurrentAssignments"
+          :label="`View ${
+            showCurrentAssignments ? 'Current' : 'All'
+          } Assignments`"
+          @change="toggleCurrentAssignments"
+          height="0px"
+        />
         <base-btn
           color="black"
           icon="refresh"
