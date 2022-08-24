@@ -5,11 +5,9 @@ export default {
     commit("isLoading", true, { root: true });
     axios
       .get("http://192.168.1.116:65111/employee")
-      .then((req) => {
-        commit("setEmployee", req.data.data);
-        commit("isLoading", false, { root: true });
-      })
-      .catch((e) => console.log(e));
+      .then((req) => commit("setEmployee", req.data.data))
+      .catch((e) => console.log(e))
+      .finally(() => commit("isLoading", false, { root: true }));
   },
 
   deleteEmployee({ dispatch }, itemList) {

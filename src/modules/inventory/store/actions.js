@@ -6,11 +6,9 @@ export default {
 
     axios
       .get("http://192.168.1.116:65111/inventory")
-      .then((req) => {
-        commit("setInventory", req.data.data);
-        commit("isLoading", false, { root: true });
-      })
-      .catch((e) => console.log(e));
+      .then((req) => commit("setInventory", req.data.data))
+      .catch((e) => console.log(e))
+      .finally(() => commit("isLoading", false, { root: true }));
   },
 
   deleteInventory({ dispatch }, itemList) {
