@@ -11,4 +11,13 @@ export default {
   filterColumn(state) {
     return state.filterColumn;
   },
+  searchBoxType(getters) {
+    const column = getters.inventoryHeaders.find(
+      (inv) => inv.value == getters.filterColumn
+    );
+    if (column) {
+      return column.type;
+    }
+    return "text";
+  },
 };

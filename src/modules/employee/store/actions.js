@@ -33,4 +33,28 @@ export default {
       .then(() => dispatch("fetchEmployee"))
       .catch((e) => console.log(e));
   },
+
+  filterEmployee({ getters, commit }, searchTerm) {
+    let filteredData = {};
+    if (searchTerm) {
+      if (getters.searchBoxType === "number") {
+        filteredData = getters.employeeList.filter(
+          (item) =>
+            item[getters.filterColumn] &&
+            item[getters.filterColumn] == searchTerm
+        );
+      } else {
+        filteredData = getters.employeeList.filter(
+          (item) =>
+            item[getters.filterColumn] &&
+            item[getters.filterColumn]
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())
+        );
+      }
+      commit("setFilteredEmployeeList", filteredData);
+    } else {
+      commit("setFilteredEmployeeList", getters.employeeList);
+    }
+  },
 };

@@ -45,4 +45,35 @@ export default {
     commit("toggleCurrentAssignments", !getters.showCurrentAssignments);
     dispatch("fetchAssignment");
   },
+
+  filterAssignment({ getters, commit }, searchTerm) {
+    let filteredData = {};
+    if (searchTerm) {
+      if (getters.searchBoxType === "number") {
+        filteredData = getters.assignmentList.filter(
+          (item) =>
+            item[getters.filterColumn] &&
+            item[getters.filterColumn] == searchTerm
+        );
+      } else {
+        filteredData = getters.assignmentList.filter((item) => {
+          if (typeof item[getters.filterColumn] === "object") {
+            return item[getters.filterColumn].translatedName
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase());
+          } else {
+            return (
+              item[getters.filterColumn] &&
+              item[getters.filterColumn]
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase())
+            );
+          }
+        });
+      }
+      commit("setFilteredAssignmentList", filteredData);
+    } else {
+      commit("setFilteredAssignmentList", getters.assignmentList);
+    }
+  },
 };

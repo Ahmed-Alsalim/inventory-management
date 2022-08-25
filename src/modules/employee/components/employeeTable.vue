@@ -1,6 +1,6 @@
 <script>
 import BaseBtn from "@/shared/BaseBtn.vue";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 import EmployeeDialog from "./employeeDialog.vue";
 export default {
   components: { BaseBtn, EmployeeDialog },
@@ -11,11 +11,18 @@ export default {
       editedItem: {},
       selected: [],
       dialogType: "",
+      search: "",
     };
   },
 
   computed: {
-    ...mapGetters("employee", ["employeeList", "employeeHeaders"]),
+    ...mapGetters("employee", [
+      "employeeList",
+      "employeeHeaders",
+      "filterColumn",
+      "searchBoxType",
+      "filteredEmployeeList",
+    ]),
     ...mapGetters(["isLoading"]),
   },
 
@@ -24,7 +31,9 @@ export default {
       "fetchEmployee",
       "editEmployee",
       "deleteEmployee",
+      "filterEmployee",
     ]),
+    ...mapMutations("employee", ["setFilterColumn"]),
 
     submitItem(item) {
       this.editEmployee(item);
@@ -72,18 +81,50 @@ export default {
   <div>
     <v-sheet color="grey lighten-3" class="mx-auto">
       <v-card-actions>
-        <base-btn color="primary" icon="add" title="add" @click="addItem" />
+        <base-btn
+          color="primary"
+          icon="add"
+          title="add"
+          flat
+          @click="addItem"
+        />
         <base-btn
           color="red"
           icon="delete"
           title="delete"
+          flat
           @click="deleteItem(selected)"
         />
+        <v-spacer />
+
+        <v-form @submit.prevent="filterEmployee(search)">
+          <v-layout>
+            <v-flex md4>
+              <v-select
+                :items="employeeHeaders"
+                @change="setFilterColumn"
+                label="Column to filter"
+              />
+            </v-flex>
+            <v-flex md1 />
+            <v-flex md4>
+              <v-text-field
+                v-model="search"
+                label="Search"
+                :type="searchBoxType"
+                single-line
+                hide-details
+              />
+            </v-flex>
+            <base-btn color="primary" type="submit" icon="search" />
+          </v-layout>
+        </v-form>
         <v-spacer />
         <base-btn
           color="black"
           icon="refresh"
           title="refresh"
+          flat
           @click="fetchEmployee"
         />
       </v-card-actions>
@@ -104,7 +145,7 @@ export default {
 
     <v-data-table
       :headers="employeeHeaders"
-      :items="employeeList"
+      :items="filteredEmployeeList"
       v-model="selected"
       class="elevation-1"
       select-all
@@ -139,4 +180,8 @@ export default {
   </div>
 </template>
 
-<style></style>
+<style scoped>
+.v-select {
+  margin: 0, 20px, 0, 20px;
+}
+</style>

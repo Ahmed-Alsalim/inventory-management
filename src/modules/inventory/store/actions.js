@@ -33,10 +33,28 @@ export default {
       .then(() => dispatch("fetchInventory"))
       .catch((e) => console.log(e));
   },
+
   filterInventory({ getters, commit }, searchTerm) {
-    let filteredData = getters.inventoryList.filter((inv) =>
-      inv[getters.filterColumn].includes(searchTerm)
-    );
-    commit("setFilteredInventoryList", filteredData);
+    let filteredData = {};
+    if (searchTerm) {
+      if (getters.searchBoxType === "number") {
+        filteredData = getters.inventoryList.filter(
+          (item) =>
+            item[getters.filterColumn] &&
+            item[getters.filterColumn] == searchTerm
+        );
+      } else {
+        filteredData = getters.inventoryList.filter(
+          (item) =>
+            item[getters.filterColumn] &&
+            item[getters.filterColumn]
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())
+        );
+      }
+      commit("setFilteredInventoryList", filteredData);
+    } else {
+      commit("setFilteredInventoryList", getters.inventoryList);
+    }
   },
 };

@@ -20,6 +20,8 @@ export default {
       "inventoryList",
       "inventoryHeaders",
       "filteredInventoryList",
+      "filterColumn",
+      "searchBoxType",
     ]),
     ...mapGetters(["isLoading"]),
   },
@@ -80,32 +82,51 @@ export default {
   <div>
     <v-sheet color="grey lighten-3" class="mx-auto">
       <v-card-actions>
-        <base-btn color="primary" icon="add" title="add" @click="addItem" />
+        <base-btn
+          color="primary"
+          icon="add"
+          title="add"
+          flat
+          @click="addItem"
+        />
         <base-btn
           color="red"
           icon="delete"
           title="delete"
+          flat
           @click="deleteItem(selected)"
         />
         <v-spacer />
-        <v-select
-          :items="inventoryHeaders"
-          @change="setFilterColumn"
-          label="dropdown"
-        ></v-select>
-        <v-text-field
-          v-model="search"
-          append-icon="search"
-          label="Search"
-          single-line
-          hide-details
-          @input="filterInventory"
-        ></v-text-field>
+
+        <v-form @submit.prevent="filterInventory(search)">
+          <v-layout>
+            <v-flex md4>
+              <v-select
+                :items="inventoryHeaders"
+                @change="setFilterColumn"
+                label="Column to filter"
+              />
+            </v-flex>
+            <v-flex md1 />
+            <v-flex md4>
+              <v-text-field
+                v-model="search"
+                label="Search"
+                :type="searchBoxType"
+                single-line
+                hide-details
+              />
+            </v-flex>
+            <base-btn color="primary" type="submit" icon="search" />
+          </v-layout>
+        </v-form>
+        <v-spacer />
 
         <base-btn
           color="black"
           icon="refresh"
           title="refresh"
+          flat
           @click="fetchInventory"
         />
       </v-card-actions>
@@ -132,7 +153,6 @@ export default {
       select-all
       :rows-per-page-items="['10']"
       :loading="isLoading"
-      :search="search"
     >
       <template v-slot:items="props">
         <tr>
@@ -162,4 +182,8 @@ export default {
   </div>
 </template>
 
-<style></style>
+<style scoped>
+.v-select {
+  margin: 0, 20px, 0, 20px;
+}
+</style>

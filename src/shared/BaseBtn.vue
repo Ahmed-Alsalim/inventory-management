@@ -1,5 +1,5 @@
 <template>
-  <v-btn flat icon :color="color" @click="click">
+  <v-btn :flat="flat" icon :color="color" @click="click">
     <v-icon>{{ icon }}</v-icon>
   </v-btn>
 </template>
@@ -9,6 +9,7 @@ export default {
   props: {
     color: String,
     icon: String,
+    flat: Boolean,
   },
   methods: {
     click() {

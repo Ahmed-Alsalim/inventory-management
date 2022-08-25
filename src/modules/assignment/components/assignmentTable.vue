@@ -1,6 +1,6 @@
 <script>
 import BaseBtn from "@/shared/BaseBtn.vue";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 import AssignmentDialog from "./assignmentDialog.vue";
 export default {
   components: { BaseBtn, AssignmentDialog },
@@ -11,6 +11,7 @@ export default {
       editedItem: {},
       selected: [],
       dialogType: "Add",
+      search: "",
       switch1: false,
     };
   },
@@ -20,6 +21,9 @@ export default {
       "assignmentList",
       "assignmentHeaders",
       "showCurrentAssignments",
+      "filterColumn",
+      "searchBoxType",
+      "filteredAssignmentList",
     ]),
     ...mapGetters(["isLoading"]),
   },
@@ -31,7 +35,9 @@ export default {
       "returnAssignment",
       "deleteAssignment",
       "toggleCurrentAssignments",
+      "filterAssignment",
     ]),
+    ...mapMutations("assignment", ["setFilterColumn"]),
 
     submitItem(item) {
       console.log(item);
@@ -68,14 +74,46 @@ export default {
   <div>
     <v-sheet color="grey lighten-3" class="mx-auto">
       <v-card-actions>
-        <base-btn color="primary" icon="add" title="add" @click="addItem" />
+        <base-btn
+          color="primary"
+          icon="add"
+          title="add"
+          flat
+          @click="addItem"
+        />
         <base-btn
           color="pink"
           icon="reply"
           title="return"
+          flat
           @click="returnItem(selected)"
         />
         <v-spacer />
+
+        <v-form @submit.prevent="filterAssignment(search)">
+          <v-layout>
+            <v-flex md4>
+              <v-select
+                :items="assignmentHeaders"
+                @change="setFilterColumn"
+                label="Column to filter"
+              />
+            </v-flex>
+            <v-flex md1 />
+            <v-flex md4>
+              <v-text-field
+                v-model="search"
+                label="Search"
+                :type="searchBoxType"
+                single-line
+                hide-details
+              />
+            </v-flex>
+            <base-btn color="primary" type="submit" icon="search" />
+          </v-layout>
+        </v-form>
+        <v-spacer />
+
         <v-switch
           :input-value="showCurrentAssignments"
           :label="`View ${
@@ -88,6 +126,7 @@ export default {
           color="black"
           icon="refresh"
           title="refresh"
+          flat
           @click="fetchAssignment"
         />
       </v-card-actions>
@@ -102,7 +141,7 @@ export default {
     </v-toolbar>
     <v-data-table
       :headers="assignmentHeaders"
-      :items="assignmentList"
+      :items="filteredAssignmentList"
       v-model="selected"
       class="elevation-1"
       select-all
@@ -141,4 +180,8 @@ export default {
   </div>
 </template>
 
-<style></style>
+<style scoped>
+.v-select {
+  margin: 0, 20px, 0, 20px;
+}
+</style>
