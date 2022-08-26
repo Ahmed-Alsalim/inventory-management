@@ -3,13 +3,13 @@ import axios from "axios";
 export default {
   fetchInventory({ commit, rootGetters }) {
     const url = rootGetters.databaseUrl;
-    commit("isLoading", true, { root: true });
+    commit("app/isLoading", true, { root: true });
 
     axios
       .get(`${url}/inventory`)
       .then((req) => commit("setInventory", req.data.data))
       .catch((e) => console.log(e))
-      .finally(() => commit("isLoading", false, { root: true }));
+      .finally(() => commit("app/isLoading", false, { root: true }));
   },
 
   deleteInventory({ dispatch, rootGetters }, itemList) {
@@ -36,7 +36,7 @@ export default {
 
   filterInventory({ getters, commit }, searchTerm) {
     let filteredData = {};
-    if (searchTerm) {
+    if (searchTerm && getters.filterColumn) {
       if (getters.searchBoxType === "number") {
         filteredData = getters.inventoryList.filter(
           (item) =>

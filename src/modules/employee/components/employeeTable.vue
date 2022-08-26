@@ -23,7 +23,7 @@ export default {
       "searchBoxType",
       "filteredEmployeeList",
     ]),
-    ...mapGetters(["isLoading"]),
+    ...mapGetters("app", ["isLoading"]),
   },
 
   methods: {
@@ -68,6 +68,9 @@ export default {
         this.dialogType = "";
         this.editedItem = {};
       }
+    },
+    employeeList() {
+      this.filterEmployee(this.search);
     },
   },
 

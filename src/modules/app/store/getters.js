@@ -5,7 +5,4 @@ export default {
   isLoading(state) {
     return state.isLoading;
   },
-  databaseUrl(state) {
-    return state.databaseUrl;
-  },
 };

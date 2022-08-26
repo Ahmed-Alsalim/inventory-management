@@ -1,15 +1,15 @@
 <script>
+import { mapGetters } from "vuex";
 import NavBar from "@/shared/navBar.vue";
 import SideBar from "@/shared/sideBar.vue";
 import inventory from "../inventory";
-import { mapGetters } from "vuex";
 import employee from "../employee";
 import Assignment from "../assignment";
 export default {
   name: "App",
   components: { inventory, SideBar, NavBar, employee, Assignment },
   computed: {
-    ...mapGetters(["currentTableName"]),
+    ...mapGetters("app", ["currentTableName"]),
   },
 };
 </script>

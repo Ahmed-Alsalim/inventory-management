@@ -2,8 +2,13 @@ export default {
   employeeList(state) {
     return state.employeeList;
   },
-  employeeHeaders(state) {
-    return state.employeeHeaders;
+  employeeHeaders() {
+    return [
+      { text: "id", value: "id", type: "number" },
+      { text: "Name", value: "name", type: "text" },
+      { text: "Title", value: "title", type: "text" },
+      { text: "Department", value: "department", type: "text" },
+    ];
   },
   filterColumn(state) {
     return state.filterColumn;
@@ -11,7 +16,7 @@ export default {
   filteredEmployeeList(state) {
     return state.filteredEmployeeList;
   },
-  searchBoxType(getters) {
+  searchBoxType(_, getters) {
     const column = getters.employeeHeaders.find(
       (inv) => inv.value == getters.filterColumn
     );

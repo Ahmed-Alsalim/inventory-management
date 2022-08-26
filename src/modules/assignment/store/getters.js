@@ -2,8 +2,18 @@ export default {
   assignmentList(state) {
     return state.assignmentList;
   },
-  assignmentHeaders(state) {
-    return state.assignmentHeaders;
+  assignmentHeaders() {
+    return [
+      { text: "id", value: "id", type: "number" },
+      { text: "Employee Name", value: "employee", type: "text" },
+      { text: "Inventory Name", value: "inventory", type: "text" },
+      { text: "Start Date", value: "startDate", type: "date" },
+      {
+        text: "Previous Employee id",
+        value: "beforeEmployeeId",
+        type: "number",
+      },
+    ];
   },
   showCurrentAssignments(state) {
     return state.showCurrentAssignments;
@@ -14,7 +24,7 @@ export default {
   filteredAssignmentList(state) {
     return state.filteredAssignmentList;
   },
-  searchBoxType(getters) {
+  searchBoxType(_, getters) {
     const column = getters.assignmentHeaders.find(
       (inv) => inv.value == getters.filterColumn
     );

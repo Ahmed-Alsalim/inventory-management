@@ -2,8 +2,14 @@ export default {
   inventoryList(state) {
     return state.inventoryList;
   },
-  inventoryHeaders(state) {
-    return state.inventoryHeaders;
+  inventoryHeaders() {
+    return [
+      { text: "id", value: "id", type: "number" },
+      { text: "Title", value: "title", type: "text" },
+      { text: "Serial Number", value: "serialNumber", type: "text" },
+      { text: "Start Date", value: "startDate", type: "date" },
+      { text: "End Date", value: "endDate", type: "date" },
+    ];
   },
   filteredInventoryList(state) {
     return state.filteredInventoryList;
@@ -11,7 +17,7 @@ export default {
   filterColumn(state) {
     return state.filterColumn;
   },
-  searchBoxType(getters) {
+  searchBoxType(_, getters) {
     const column = getters.inventoryHeaders.find(
       (inv) => inv.value == getters.filterColumn
     );

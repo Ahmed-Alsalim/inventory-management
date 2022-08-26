@@ -2,14 +2,14 @@ import axios from "axios";
 
 export default {
   fetchEmployee({ commit, rootGetters }) {
-    commit("isLoading", true, { root: true });
+    commit("app/isLoading", true, { root: true });
     const url = rootGetters.databaseUrl;
 
     axios
       .get(`${url}/employee`)
       .then((req) => commit("setEmployee", req.data.data))
       .catch((e) => console.log(e))
-      .finally(() => commit("isLoading", false, { root: true }));
+      .finally(() => commit("app/isLoading", false, { root: true }));
   },
 
   deleteEmployee({ dispatch, rootGetters }, itemList) {
@@ -36,7 +36,7 @@ export default {
 
   filterEmployee({ getters, commit }, searchTerm) {
     let filteredData = {};
-    if (searchTerm) {
+    if (searchTerm && getters.filterColumn) {
       if (getters.searchBoxType === "number") {
         filteredData = getters.employeeList.filter(
           (item) =>

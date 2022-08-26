@@ -4,12 +4,12 @@ export default {
   fetchAssignment({ commit, getters, rootGetters }) {
     const current = getters.showCurrentAssignments ? "current" : "";
     const url = rootGetters.databaseUrl;
-    commit("isLoading", true, { root: true });
+    commit("app/isLoading", true, { root: true });
     axios
       .get(`${url}/assignment/${current}`)
       .then((req) => commit("setAssignment", req.data.data))
       .catch((e) => console.log(e))
-      .finally(() => commit("isLoading", false, { root: true }));
+      .finally(() => commit("app/isLoading", false, { root: true }));
   },
 
   returnAssignment({ dispatch, rootGetters }, assignmentList) {
@@ -48,7 +48,7 @@ export default {
 
   filterAssignment({ getters, commit }, searchTerm) {
     let filteredData = {};
-    if (searchTerm) {
+    if (searchTerm && getters.filterColumn) {
       if (getters.searchBoxType === "number") {
         filteredData = getters.assignmentList.filter(
           (item) =>

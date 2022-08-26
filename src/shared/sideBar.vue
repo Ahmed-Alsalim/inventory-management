@@ -12,7 +12,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(["changeCurrentTable"]),
+    ...mapMutations("app", ["changeCurrentTable"]),
   },
 };
 </script>

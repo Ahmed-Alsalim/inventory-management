@@ -25,7 +25,7 @@ export default {
       "searchBoxType",
       "filteredAssignmentList",
     ]),
-    ...mapGetters(["isLoading"]),
+    ...mapGetters("app", ["isLoading"]),
   },
 
   methods: {
@@ -61,6 +61,12 @@ export default {
       if (confirm("Are you sure you want to return the choosen item/s?")) {
         this.returnAssignment(itemList);
       }
+    },
+  },
+
+  watch: {
+    assignmentList() {
+      this.filterAssignment(this.search);
     },
   },
 
