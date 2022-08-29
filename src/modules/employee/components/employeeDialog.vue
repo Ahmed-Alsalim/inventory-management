@@ -25,7 +25,7 @@ export default {
         { text: "Department", value: "department" },
       ];
       if (this.dialogType === "Edit") {
-        fields.unshift({ text: "id", value: "id" });
+        fields.unshift({ text: "id", value: "id", readonly: true });
         return fields;
       }
       return fields;
@@ -34,8 +34,6 @@ export default {
 
   methods: {
     submitItem(data) {
-      console.log("submit");
-      console.log(data);
       this.$emit("submit", data);
       this.dialog = false;
     },
@@ -65,7 +63,7 @@ export default {
               <v-flex :key="field.value" s12 md6>
                 <v-text-field
                   :label="field.text"
-                  :readonly="field.value === 'id'"
+                  :readonly="field.readonly"
                   v-model="data[field.value]"
                 />
               </v-flex>

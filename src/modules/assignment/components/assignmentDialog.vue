@@ -27,8 +27,6 @@ export default {
     ...mapActions("inventory", ["fetchInventory"]),
     ...mapActions("employee", ["fetchEmployee"]),
     submitItem(data) {
-      console.log("submit");
-      console.log(data);
       this.$emit("submit", data);
       this.dialog = false;
     },
@@ -58,14 +56,14 @@ export default {
           <v-layout wrap>
             <v-flex>
               <v-select
-                label="Inventory id"
+                label="Inventory Name"
                 v-model="data.inventoryId"
                 :items="inventoryList"
                 item-text="title"
                 item-value="id"
               />
               <v-select
-                label="Employee id"
+                label="Employee Name"
                 v-model="data.employeeId"
                 :items="employeeList"
                 item-text="name"

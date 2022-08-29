@@ -24,6 +24,7 @@ export default {
       "filterColumn",
       "searchBoxType",
       "filteredAssignmentList",
+      "tableItem",
     ]),
     ...mapGetters("app", ["isLoading"]),
   },
@@ -40,20 +41,9 @@ export default {
     ...mapMutations("assignment", ["setFilterColumn"]),
 
     submitItem(item) {
-      console.log(item);
       this.addAssignment(item);
     },
 
-    tableItem(data) {
-      if (data) {
-        if (typeof data === "object") {
-          return data.translatedName;
-        } else if (typeof data === "string" && data.match(/.*T.*Z$/)) {
-          return `${data.slice(0, 10)} ${data.slice(11, 16)}`;
-        }
-        return data;
-      }
-    },
     addItem() {
       this.dialog = true;
     },

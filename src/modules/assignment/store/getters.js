@@ -33,4 +33,12 @@ export default {
     }
     return "text";
   },
+  tableItem: () => (data) => {
+    if (data && typeof data === "object") {
+      return data.translatedName;
+    } else if (typeof data === "string" && data.match(/.*T.*Z$/)) {
+      return `${data.slice(0, 10)} ${data.slice(11, 16)}`;
+    }
+    return data;
+  },
 };

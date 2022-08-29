@@ -26,4 +26,14 @@ export default {
     }
     return "text";
   },
+  tableItem: () => (data) => {
+    if (typeof data === "string" && data.match(/.*T.*Z$/)) {
+      return `${data.slice(0, 10)} ${data.slice(11, 16)}`;
+    }
+    return data;
+  },
+
+  searchAll(state) {
+    return state.searchAll;
+  },
 };

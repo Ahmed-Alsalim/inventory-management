@@ -36,10 +36,7 @@ export default {
     };
     axios(config)
       .then(() => dispatch("fetchAssignment"))
-      .catch((e) => {
-        console.log(e);
-        alert("Quota exceeded");
-      });
+      .catch((e) => console.log(e));
   },
   toggleCurrentAssignments({ commit, dispatch, getters }) {
     commit("toggleCurrentAssignments", !getters.showCurrentAssignments);

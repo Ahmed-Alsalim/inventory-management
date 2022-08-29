@@ -1,7 +1,8 @@
 <script>
-import BaseBtn from "@/shared/BaseBtn.vue";
 import { mapGetters, mapActions, mapMutations } from "vuex";
+import BaseBtn from "@/shared/BaseBtn.vue";
 import InventoryDialog from "./inventoryDialog.vue";
+
 export default {
   components: { BaseBtn, InventoryDialog },
 
@@ -12,6 +13,7 @@ export default {
       selected: [],
       dialogType: "",
       search: "",
+      searchAll: "",
     };
   },
 
@@ -22,8 +24,15 @@ export default {
       "filteredInventoryList",
       "filterColumn",
       "searchBoxType",
+      "tableItem",
     ]),
-    ...mapGetters(["isLoading"]),
+    ...mapGetters("app", ["isLoading"]),
+
+    inventoryFilterHeaders() {
+      const x = this.inventoryHeaders;
+      x.unshift({ text: "All", value: "all" });
+      return x;
+    },
   },
 
   methods: {
@@ -39,21 +48,13 @@ export default {
       this.editInventory(item);
     },
 
-    tableItem(data) {
-      if (data) {
-        if (typeof data === "string" && data.match(/.*T.*Z$/)) {
-          return `${data.slice(0, 10)} ${data.slice(11, 16)}`;
-        }
-        return data;
-      }
-    },
     addItem() {
       this.dialogType = "Add";
       this.dialog = true;
     },
     editItem(item) {
       const data = this.inventoryList;
-      this.editedItem = data.filter((tableItem) => item.id === tableItem.id)[0];
+      this.editedItem = data.find((tableItem) => item.id === tableItem.id);
       this.dialogType = "Edit";
       this.dialog = true;
     },
@@ -62,13 +63,27 @@ export default {
         this.deleteInventory(itemList);
       }
     },
+
+    filterTable() {
+      if (this.filterColumn === "all") {
+        this.filterInventory("");
+        this.searchAll = this.search;
+      } else {
+        this.filterInventory(this.search);
+      }
+    },
   },
+
   watch: {
     dialog(show) {
       if (!show) {
         this.dialogType = "";
         this.editedItem = {};
       }
+    },
+
+    inventoryList() {
+      this.filterInventory(this.search);
     },
   },
 
@@ -98,11 +113,11 @@ export default {
         />
         <v-spacer />
 
-        <v-form @submit.prevent="filterInventory(search)">
+        <v-form @submit.prevent="filterTable()">
           <v-layout>
             <v-flex md4>
               <v-select
-                :items="inventoryHeaders"
+                :items="inventoryFilterHeaders"
                 @change="setFilterColumn"
                 label="Column to filter"
               />
@@ -115,6 +130,7 @@ export default {
                 :type="searchBoxType"
                 single-line
                 hide-details
+                clearable
               />
             </v-flex>
             <base-btn color="primary" type="submit" icon="search" />
@@ -153,6 +169,7 @@ export default {
       select-all
       :rows-per-page-items="['10']"
       :loading="isLoading"
+      :search="searchAll"
     >
       <template v-slot:items="props">
         <tr>

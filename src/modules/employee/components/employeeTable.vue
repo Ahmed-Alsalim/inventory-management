@@ -1,7 +1,8 @@
 <script>
-import BaseBtn from "@/shared/BaseBtn.vue";
 import { mapGetters, mapActions, mapMutations } from "vuex";
+import BaseBtn from "@/shared/BaseBtn.vue";
 import EmployeeDialog from "./employeeDialog.vue";
+
 export default {
   components: { BaseBtn, EmployeeDialog },
 
@@ -38,21 +39,13 @@ export default {
     submitItem(item) {
       this.editEmployee(item);
     },
-    tableItem(data) {
-      if (data) {
-        if (typeof data === "string" && data.match(/.*T.*Z$/)) {
-          return `${data.slice(0, 10)} ${data.slice(11, 16)}`;
-        }
-        return data;
-      }
-    },
     addItem() {
       this.dialogType = "Add";
       this.dialog = true;
     },
     editItem(item) {
       const data = this.employeeList;
-      this.editedItem = data.filter((tableItem) => item.id === tableItem.id)[0];
+      this.editedItem = data.find((tableItem) => item.id === tableItem.id);
       this.dialogType = "Edit";
       this.dialog = true;
     },
@@ -62,6 +55,7 @@ export default {
       }
     },
   },
+
   watch: {
     dialog(show) {
       if (!show) {
@@ -165,7 +159,7 @@ export default {
             />
           </td>
           <td v-for="header in employeeHeaders" :key="header.value">
-            {{ tableItem(props.item[header.value]) }}
+            {{ props.item[header.value] }}
           </td>
           <td>
             <v-icon small class="mr-2" @click="editItem(props.item)">
